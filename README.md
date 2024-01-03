@@ -1,4 +1,4 @@
-# A Server-Side Rendered Next Application
+# Dynamic Weather Reporting with Next.js: Server-Side Rendered for Speed and SEO
 
 This is a Next.js project bootstrapped with `create-next-app`, designed for server-side rendering (SSR). It features a weather forecasting interface with real-time data fetching and a modern, responsive UI.
 
