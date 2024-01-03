@@ -1,17 +1,24 @@
 import { GetServerSideProps } from 'next'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Title, SearchForm, Input, SubmitButton, ForecastContainer, Container as WeatherCardContainer } from '@/app/styled-components'
 import { Container, Grid } from '@mui/material'
 import { fetchWeatherData } from '@/app/services'
 import { WeatherData, ForecastData, WeatherProps } from '@/app/interfaces'
 import { WeatherCard, WeatherInfo, ErrorDisplay, LoadingSpinner } from '@/app/presentation-components'
+import router from 'next/router'
 
 const Weather: React.FC<WeatherProps> = props => {
-  const [city, setCity] = useState<string>('London')
-  const [isLoading, setIsLoading] = useState(false)
+  const [city, setCity] = useState<string>(props.city)
   const [weather, setWeather] = useState<WeatherData | undefined>(props.weather)
   const [forecast, setForecast] = useState<ForecastData[] | undefined>(props.forecast)
   const [error, setError] = useState<string | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (router.query.city && router.query.city !== city) {
+      setCity(router.query.city as string)
+    }
+  }, [])
 
   const fetchWeatherData = async (city: string) => {
     setIsLoading(true)
@@ -35,6 +42,7 @@ const Weather: React.FC<WeatherProps> = props => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     fetchWeatherData(city)
+    router.push(`/weather?city=${encodeURIComponent(city)}`)
   }
 
   if (error) return <ErrorDisplay error={error} />
@@ -93,6 +101,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   } catch (error: any) {
     return {
       props: {
+        city,
         weather: null,
         forecast: [],
         error: error.message || 'Error fetching weather data'

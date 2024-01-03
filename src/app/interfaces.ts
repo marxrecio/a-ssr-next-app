@@ -10,6 +10,7 @@ export interface WeatherData {
 }
 
 export interface WeatherProps {
+  city: string
   weather: WeatherData
   forecast: Array<ForecastData>
   error?: string
