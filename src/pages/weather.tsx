@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
-import { Container, Title, SearchForm, Input, SubmitButton, ForecastContainer } from '@/app/styled-components'
+import { Title, SearchForm, Input, SubmitButton, ForecastContainer, Container as WeatherCardContainer } from '@/app/styled-components'
+import { Container, Grid } from '@mui/material'
 import { fetchWeatherData } from '@/app/services'
 import { WeatherData, ForecastData, WeatherProps } from '@/app/interfaces'
 import { WeatherCard, WeatherInfo, ErrorDisplay, LoadingSpinner } from '@/app/presentation-components'
@@ -47,11 +48,21 @@ const Weather: React.FC<WeatherProps> = props => {
         <Input type="text" name="city" placeholder="Enter city name" value={city} onChange={e => setCity(e.target.value)} />
         <SubmitButton type="submit">Get Weather</SubmitButton>
       </SearchForm>
-      {weather && <WeatherInfo weather={weather} />}
+      {weather && (
+        <WeatherCardContainer>
+          <WeatherInfo weather={weather} />
+        </WeatherCardContainer>
+      )}
       <ForecastContainer>
-        {forecast?.map((day, index) => (
-          <WeatherCard key={index} day={day} />
-        ))}
+        <Grid container spacing={4}>
+          {forecast?.map((day, index) => (
+            <Grid key={index} item xs={12} sm={4}>
+              <WeatherCardContainer>
+                <WeatherCard day={day} />
+              </WeatherCardContainer>
+            </Grid>
+          ))}
+        </Grid>
       </ForecastContainer>
     </Container>
   )

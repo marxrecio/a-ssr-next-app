@@ -1,6 +1,6 @@
 import { WeatherInfo as WeatherInfoStyled, WeatherText, DayCard, ErrorMessage, LoadingOverlay } from '@/app/styled-components'
 import { ForecastData, WeatherData } from '@/app/interfaces'
-import CircularProgress from '@mui/material/CircularProgress'
+import { CircularProgress } from '@mui/material'
 
 export const WeatherCard = ({ day }: { day: ForecastData }) => (
   <DayCard>

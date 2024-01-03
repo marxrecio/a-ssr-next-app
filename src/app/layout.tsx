@@ -16,9 +16,7 @@ import { muiTheme } from '@/app/mui-theme'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={muiTheme}>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
+      <div className={inter.className}>{children}</div>
     </ThemeProvider>
   )
 }
