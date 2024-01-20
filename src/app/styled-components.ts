@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { theme } from './theme'
+
 export const WeatherText = styled.p`
   margin: ${theme.spacing(1)} 0;
   font-weight: bold;
@@ -16,32 +17,22 @@ const fadeIn = keyframes`
 
 const responsiveWidth = '768px'
 
-const boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
-
-const primaryColor = '#4a90e2' // Soft Blue
-const secondaryColor = '#adb5bd' // Gentle Gray
-const textColor = '#2c3e50' // Darker Shade
-const errorColor = '#e74c3c' // Muted Red
-const backgroundColor = '#f8f9fa' // Light Gray
-
-const focusOutline = '2px solid #4D90FE'
-
-export const Container = styled.div`
+export const AltContainer = styled.div`
   height: 100%;
   font-family: ${theme.fonts.primary};
-  background: ${backgroundColor};
-  color: ${textColor};
+  background: ${theme.colors.background};
+  color: ${theme.colors.text};
   animation: ${fadeIn} 1s ease-in-out;
-  @media (max-width: ${responsiveWidth}) {
+  @media (max-width: ${theme.breakpoints.md}) {
     padding: 10px;
   }
 `
 
 export const Title = styled.h1`
   font-family: ${theme.fonts.primary};
-  color: ${primaryColor};
+  color: ${theme.colors.primary};
   margin-bottom: 20px;
-  font-size: 2em;
+  font-size: 2.5em;
   font-weight: bold;
 `
 
@@ -55,42 +46,57 @@ export const SearchForm = styled.form`
   }
 `
 
+export const SectionTitle = styled.h2`
+  font-family: ${theme.fonts.primary};
+  font-size: 1.5em;
+  color: ${theme.colors.primary};
+  margin-bottom: 15px;
+`
+
 export const Input = styled.input`
   padding: 10px;
   margin-right: 10px;
-  border: 1px solid ${primaryColor};
+  border: 2px solid ${theme.colors.primary};
   border-radius: 10px;
   &:focus {
-    outline: ${focusOutline};
+    outline: 3px solid ${theme.colors.focus};
   }
-  @media (max-width: ${responsiveWidth}) {
+  @media (max-width: ${theme.breakpoints.md}) {
     margin: 0 0 10px 0;
+    width: 100%;
   }
 `
 
 export const SubmitButton = styled.button`
-  background-color: ${primaryColor};
+  background-color: ${theme.colors.primary};
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  box-shadow: ${boxShadow};
+  box-shadow: ${theme.shadows.md};
   &:hover {
-    background-color: ${secondaryColor};
+    background-color: ${theme.colors.secondary};
   }
   &:focus {
-    outline: ${focusOutline};
+    outline: ${theme.colors.focus};
   }
 `
 
 export const WeatherInfo = styled.div`
-  background-color: ${secondaryColor};
+  background-color: ${theme.colors.secondary};
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   margin-bottom: 20px;
-  display: inline-block;
-  box-shadow: ${boxShadow};
+  display: inline-flex;
+  flex-direction: column;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: ${theme.shadows.lg};
+  }
 `
 
 export const ForecastContainer = styled.div`
@@ -105,15 +111,14 @@ export const ForecastContainer = styled.div`
 `
 
 export const DayCard = styled.div`
-  margin-bottom: 20px;
-  background-color: ${secondaryColor};
-  padding: 20px;
+  background-color: ${theme.colors.secondary};
+  padding: ${theme.spacing(4)};
   border-radius: 10px;
-  box-shadow: ${boxShadow};
+  box-shadow: ${theme.shadows.md};
 `
 
 export const ErrorMessage = styled.div`
-  color: ${errorColor};
+  color: ${theme.colors.error};
   margin: 40px 0;
 `
 

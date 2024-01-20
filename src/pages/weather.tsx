@@ -1,14 +1,15 @@
 import { GetServerSideProps } from 'next'
 import React, { useState, useEffect } from 'react'
-import { Title, SearchForm, Input, SubmitButton, ForecastContainer, Container as WeatherCardContainer } from '@/app/styled-components'
-import { Container, Grid } from '@mui/material'
+import { Title, SearchForm, Input, SubmitButton, SectionTitle } from '@/app/styled-components'
+import { Container, Box } from '@mui/material'
 import { fetchWeatherData } from '@/app/services'
 import { WeatherData, ForecastData, WeatherProps } from '@/app/interfaces'
-import { WeatherCard, WeatherInfo, ErrorDisplay, LoadingSpinner } from '@/app/presentation-components'
+import { ForecastInfo, WeatherInfo, ErrorDisplay, LoadingSpinner } from '@/app/presentation-components'
 import router from 'next/router'
 
 const Weather: React.FC<WeatherProps> = props => {
   const [city, setCity] = useState<string>(props.city)
+  const [titleCity, setTitleCity] = useState<string>(props.city)
   const [weather, setWeather] = useState<WeatherData | undefined>(props.weather)
   const [forecast, setForecast] = useState<ForecastData[] | undefined>(props.forecast)
   const [error, setError] = useState<string | undefined>(undefined)
@@ -17,6 +18,7 @@ const Weather: React.FC<WeatherProps> = props => {
   useEffect(() => {
     if (router.query.city && router.query.city !== city) {
       setCity(router.query.city as string)
+      setTitleCity(router.query.city as string)
     }
   }, [])
 
@@ -42,6 +44,7 @@ const Weather: React.FC<WeatherProps> = props => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     fetchWeatherData(city)
+    setTitleCity(city)
     router.push(`/weather?city=${encodeURIComponent(city)}`)
   }
 
@@ -53,25 +56,14 @@ const Weather: React.FC<WeatherProps> = props => {
     <Container>
       <Title>Weather Report</Title>
       <SearchForm onSubmit={handleSubmit}>
+        <Box sx={{ padding: '0 16px' }}>
+          <SectionTitle>Search for a City</SectionTitle>
+        </Box>
         <Input type="text" name="city" placeholder="Enter city name" value={city} onChange={e => setCity(e.target.value)} />
         <SubmitButton type="submit">Get Weather</SubmitButton>
       </SearchForm>
-      {weather && (
-        <WeatherCardContainer>
-          <WeatherInfo weather={weather} />
-        </WeatherCardContainer>
-      )}
-      <ForecastContainer>
-        <Grid container spacing={4}>
-          {forecast?.map((day, index) => (
-            <Grid key={index} item xs={12} sm={4}>
-              <WeatherCardContainer>
-                <WeatherCard day={day} />
-              </WeatherCardContainer>
-            </Grid>
-          ))}
-        </Grid>
-      </ForecastContainer>
+      {weather && <WeatherInfo weather={weather} city={titleCity} />}
+      {forecast && forecast.length > 0 && <ForecastInfo forecast={forecast} />}
     </Container>
   )
 }
